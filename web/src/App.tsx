@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
-import { Waves, Menu, X, ArrowRight, ShieldCheck, Users, LifeBuoy, Languages, Star, Thermometer, Wind, Calendar, ChevronRight } from 'lucide-react';
+import { Waves, Menu, X, ArrowRight, ShieldCheck, Users, LifeBuoy, Languages, ChevronRight } from 'lucide-react';
 import ScrollExpandMedia from './components/ui/scroll-expansion-hero';
 
 const App = () => {

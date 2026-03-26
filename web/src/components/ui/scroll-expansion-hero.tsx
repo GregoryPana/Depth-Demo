@@ -306,13 +306,13 @@ const ScrollExpandMedia = ({
                 }`}
               >
                 <motion.h2
-                  className='display-xl font-bold text-white transition-none !tracking-tighter'
+                  className='display-xl font-bold text-white bioluminescence-text transition-none !tracking-tighter'
                   style={{ transform: `translateX(-${textTranslateX}vw)` }}
                 >
                   {firstWord}
                 </motion.h2>
                 <motion.h2
-                  className='display-xl font-bold text-center text-white transition-none !tracking-tighter'
+                  className='display-xl font-bold text-center text-white bioluminescence-text transition-none !tracking-tighter'
                   style={{ transform: `translateX(${textTranslateX}vw)` }}
                 >
                   {restOfTitle}
