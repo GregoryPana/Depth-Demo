@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #05070A;
-  --color-panel: #0A0D14;
-  --color-accent: #00F5FF;
-  --color-accent-muted: rgba(0, 245, 255, 0.1);
-  --color-border: rgba(255, 255, 255, 0.08);
+  --color-background: #060C14;
+  --color-panel: #0A1420;
+  --color-accent: #38BDF8; /* Marine Sky Blue */
+  --color-accent-muted: rgba(56, 189, 248, 0.1);
+  --color-border: rgba(255, 255, 255, 0.1);
   
   --font-display: "Poppins", sans-serif;
   --font-body: "Switzer", sans-serif;
@@ -19,10 +19,10 @@
 
 @layer base {
   :root {
-    --bg-main: #05070A;
+    --bg-main: #060C14;
     --text-primary: #FFFFFF;
-    --text-secondary: #A1A1AA;
-    --accent: #00F5FF;
+    --text-secondary: #CBD5E1; /* Solid Slate/Zinc */
+    --accent: #38BDF8;
     --font-scale-base: 16px;
   }
 
