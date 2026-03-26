@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #05070A;
+  --color-panel: #0A0D14;
+  --color-accent: #00F5FF;
+  --color-accent-muted: rgba(0, 245, 255, 0.1);
+  --color-border: rgba(255, 255, 255, 0.08);
+  
+  --font-display: "Poppins", sans-serif;
+  --font-body: "Switzer", sans-serif;
+
+  --tracking-display: -0.05em;
+  --tracking-h1: -0.03em;
+  
+  --radius-card: 24px;
+  --radius-button: 12px;
+}
+
+@layer base {
+  :root {
+    --bg-main: #05070A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A1A1AA;
+    --accent: #00F5FF;
+    --font-scale-base: 16px;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .display-txt {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(10, 13, 20, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .text-shadow-cyan {
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+  }
+  
+  .cyan-glow {
+    box-shadow: 0 0 40px -10px rgba(0, 245, 255, 0.3);
+  }
+}
+
+/* Typography Classes from Design Guidelines */
+.display-xl {
+  font-size: 88px;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.display-l {
+  font-size: 64px;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.h1-custom {
+  font-size: 56px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.h2-custom {
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.caption-meta {
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .display-xl { font-size: 44px; }
+  .display-l { font-size: 36px; }
+  .h1-custom { font-size: 32px; }
+}
