@@ -31,13 +31,13 @@ const App = () => {
   });
 
   const depth = useTransform(smoothProgress, [0, 1], [0, 40]);
-  const bgColor = useTransform(smoothProgress, [0, 0.5, 1], ["#060C14", "#08101A", "#04080D"]);
+  const bgColor = useTransform(smoothProgress, [0, 0.5, 1], ["#F0F9FF", "#E0F2FE", "#BAE6FD"]);
 
   return (
     <motion.div 
       ref={containerRef} 
       style={{ backgroundColor: bgColor }}
-      className="relative w-full text-white selection:bg-accent selection:text-black overflow-x-hidden"
+      className="relative w-full text-slate-900 selection:bg-accent selection:text-white overflow-x-hidden"
     >
       {/* Cinematic Noise Overlay */}
       <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] contrast-150 brightness-150" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
@@ -68,7 +68,7 @@ const App = () => {
           </button>
         </div>
 
-        <button className="md:hidden text-white z-[60]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <button className="md:hidden text-slate-900 z-[60]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
           {isMenuOpen ? <X /> : <Menu />}
         </button>
 
@@ -97,8 +97,8 @@ const App = () => {
 
       {/* Depth Gauge */}
       <div className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-4">
-        <div className="caption-meta rotate-90 mb-12 origin-center whitespace-nowrap text-white/30">DESCENT DEPTH</div>
-        <div className="h-64 w-[1px] bg-white/10 relative">
+        <div className="caption-meta rotate-90 mb-12 origin-center whitespace-nowrap text-slate-900/40">DESCENT DEPTH</div>
+        <div className="h-64 w-[1px] bg-slate-900/10 relative">
           <motion.div 
             style={{ top: useTransform(smoothProgress, [0, 1], ["0%", "100%"]) }}
             className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-accent cyan-glow"
@@ -108,7 +108,7 @@ const App = () => {
           <motion.span className="text-3xl font-display font-bold text-accent">
             {useTransform(depth, (v) => v.toFixed(0))}
           </motion.span>
-          <span className="caption-meta text-[10px] text-white/30">METERS</span>
+          <span className="caption-meta text-[10px] text-slate-900/40">METERS</span>
         </div>
       </div>
 
@@ -127,11 +127,11 @@ const App = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="text-center mb-40"
+            className="text-center mb-40 text-slate-900"
           >
             <span className="caption-meta text-accent mb-6 block tracking-widest">PREMIUM PRIVATE CHARTERS</span>
-            <h2 className="display-xl mb-8 text-white">Unrivaled Access</h2>
-            <p className="max-w-xl mx-auto text-slate-300 text-lg mb-10">
+            <h2 className="display-xl mb-8 font-bold">Unrivaled Access</h2>
+            <p className="max-w-xl mx-auto text-slate-600 text-lg mb-10">
               Discover the hidden treasures of the Indian Ocean with our bespoke fleet and expert crew.
             </p>
           </motion.div>
@@ -186,8 +186,8 @@ const App = () => {
               </motion.div>
               <div>
                 <span className="caption-meta text-accent mb-4 block">THE FLEET</span>
-                <h2 className="display-l mb-8 text-white">Uncompromising Luxury</h2>
-                <p className="text-lg text-slate-300 mb-10 leading-relaxed">
+                <h2 className="display-l mb-8 text-slate-900">Uncompromising Luxury</h2>
+                <p className="text-lg text-slate-600 mb-10 leading-relaxed">
                   Our fleet represents the pinnacle of nautical engineering. From high-speed chase boats to stabilized luxury yachts, every vessel is curated for the Seychellois waters.
                 </p>
                 <div className="space-y-6">
@@ -201,7 +201,7 @@ const App = () => {
                       <div className="w-5 h-5 rounded-full border border-accent flex items-center justify-center">
                         <div className="w-1 h-1 bg-accent rounded-full" />
                       </div>
-                      <span className="text-slate-200">{text}</span>
+                      <span className="text-slate-800 font-medium">{text}</span>
                     </div>
                   ))}
                 </div>
@@ -210,11 +210,11 @@ const App = () => {
           </section>
 
           {/* Itineraries / Map Section */}
-          <section id="destinations" className="py-32 bg-[#0A1420]/80 backdrop-blur-sm">
-            <div className="max-w-5xl mx-auto text-center px-6 mb-20">
+          <section id="destinations" className="py-32 bg-[#E0F2FE]/80 backdrop-blur-sm">
+            <div className="max-w-5xl mx-auto text-center px-6 mb-20 text-slate-900">
               <span className="caption-meta text-accent mb-4 block">DESTINATIONS</span>
-              <h2 className="display-l mb-6 text-white">Explore the Archipelago</h2>
-              <p className="text-slate-300">Curated routes between the inner and outer islands of Seychelles.</p>
+              <h2 className="display-l mb-6 font-bold">Explore the Archipelago</h2>
+              <p className="text-slate-600">Curated routes between the inner and outer islands of Seychelles.</p>
             </div>
             
             <div className="flex overflow-x-auto pb-20 px-6 gap-8 no-scrollbar scroll-smooth">
@@ -249,9 +249,9 @@ const App = () => {
           <footer id="contact" className="pt-60 pb-20 px-6 overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-20" />
             
-            <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
-              <h2 className="display-xl mb-12 text-white">Ready to <span className="text-accent underline decoration-accent/30 underline-offset-8">Dive?</span></h2>
-              <p className="text-slate-200 max-w-xl mb-12">
+            <div className="max-w-7xl mx-auto flex flex-col items-center text-center text-slate-900">
+              <h2 className="display-xl mb-12 font-bold">Ready to <span className="text-accent underline decoration-accent/30 underline-offset-8">Dive?</span></h2>
+              <p className="text-slate-600 max-w-xl mb-12">
                 Contact our concierge team to build your tailor-made Seychelles experience.
               </p>
               <div className="flex flex-wrap justify-center gap-6 mb-32">
@@ -259,22 +259,22 @@ const App = () => {
                   { icon: <MessageSquare />, label: "WhatsApp Concierge", sub: "+248 123 4567" },
                   { icon: <Calendar />, label: "Online Booking", sub: "Fast & Secure" },
                 ].map((item, i) => (
-                  <div key={i} className="glass p-8 rounded-2xl flex flex-col items-center min-w-[280px] hover:border-accent transition-colors cursor-pointer group">
+                  <div key={i} className="glass p-8 rounded-2xl flex flex-col items-center min-w-[280px] hover:border-accent transition-colors cursor-pointer group !bg-white/40">
                     <div className="mb-4 text-accent group-hover:scale-110 transition-transform">{item.icon}</div>
-                    <div className="font-bold mb-1 text-white">{item.label}</div>
-                    <div className="text-slate-400 text-sm">{item.sub}</div>
+                    <div className="font-bold mb-1">{item.label}</div>
+                    <div className="text-slate-500 text-sm">{item.sub}</div>
                   </div>
                 ))}
               </div>
 
-              <div className="w-full flex flex-col md:flex-row justify-between items-center pt-20 border-t border-white/10 gap-10">
+              <div className="w-full flex flex-col md:flex-row justify-between items-center pt-20 border-t border-slate-200 gap-10">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full border border-accent flex items-center justify-center">
                     <div className="w-1 h-1 bg-accent rounded-full" />
                   </div>
-                  <span className="font-display font-bold text-white">DEPTHS</span>
+                  <span className="font-display font-bold">DEPTHS</span>
                 </div>
-                <div className="flex gap-8 caption-meta text-[10px] text-slate-500">
+                <div className="flex gap-8 caption-meta text-[10px] text-slate-400">
                   <a href="#" className="hover:text-accent transition-colors">Privacy Policy</a>
                   <a href="#" className="hover:text-accent transition-colors">Terms of Service</a>
                   <span>© 2026 Depths Charters Ltd.</span>
