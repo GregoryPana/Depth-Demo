@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { ChevronDown, MapPin, Waves, Anchor, Ship, Calendar, MessageSquare, Menu, X, ArrowRight } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionValueEvent } from 'framer-motion';
+import { MapPin, Waves, Menu, X, ArrowRight } from 'lucide-react';
 import ScrollExpandMedia from './components/ui/scroll-expansion-hero';
 
 const App = () => {
@@ -32,6 +32,12 @@ const App = () => {
   // Background shifts from Sky 200 light blue to Sky 400 sea blue
   const bgColor = useTransform(smoothProgress, [0, 0.5, 1], ["#BAE6FD", "#7DD3FC", "#38BDF8"]);
   const depth = useTransform(smoothProgress, [0, 1], [0, 60]);
+  const progressPercent = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
+
+  const [displayDepth, setDisplayDepth] = useState(0);
+  useMotionValueEvent(depth, "change", (latest) => {
+    setDisplayDepth(Math.round(latest));
+  });
 
   return (
     <motion.div 
@@ -86,14 +92,14 @@ const App = () => {
         <div className="flex flex-col items-center gap-6">
           <div className="w-px h-40 bg-slate-900/10 relative overflow-hidden">
             <motion.div 
-               style={{ height: useTransform(smoothProgress, [0, 1], ["0%", "100%"]) }}
+               style={{ height: progressPercent }}
                className="w-full bg-slate-900"
             />
           </div>
           <motion.div className="text-xs font-black rotate-0 flex flex-col items-center">
              <span className="text-slate-900 opacity-30 mb-2 uppercase tracking-[0.2em] [writing-mode:vertical-rl]">Ocean Depth</span>
              <motion.span className="text-2xl mt-4 font-black">
-                {useTransform(depth, (v) => Math.round(v))}m
+                {displayDepth}m
              </motion.span>
           </motion.div>
         </div>
