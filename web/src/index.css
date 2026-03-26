@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #F0F9FF; /* Very light pastel blue */
-  --color-panel: #E0F2FE;
-  --color-accent: #0284C7; /* Deep Azure */
-  --color-accent-muted: rgba(2, 132, 199, 0.1);
-  --color-border: rgba(2, 132, 199, 0.2);
+  --color-background: #034D75; /* Vibrant Sea Blue */
+  --color-panel: #023E5F;
+  --color-accent: #38BDF8; 
+  --color-accent-muted: rgba(56, 189, 248, 0.1);
+  --color-border: rgba(255, 255, 255, 0.15);
   
   --font-display: "Poppins", sans-serif;
   --font-body: "Switzer", sans-serif;
@@ -19,10 +19,10 @@
 
 @layer base {
   :root {
-    --bg-main: #F0F9FF;
-    --text-primary: #082F49; /* Deep Sea Blue */
-    --text-secondary: #0C4A6E; 
-    --accent: #0284C7;
+    --bg-main: #034D75;
+    --text-primary: #FFFFFF;
+    --text-secondary: #E0F2FE; 
+    --accent: #38BDF8;
     --font-scale-base: 16px;
   }
 
