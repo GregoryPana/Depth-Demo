@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
-import { ChevronDown, MapPin, Waves, Anchor, Ship, Calendar, MessageSquare, Menu, X } from 'lucide-react';
+import { ChevronDown, MapPin, Waves, Anchor, Ship, Calendar, MessageSquare, Menu, X, ArrowRight } from 'lucide-react';
 import ScrollExpandMedia from './components/ui/scroll-expansion-hero';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -30,257 +29,210 @@ const App = () => {
     restDelta: 0.001
   });
 
-  const depth = useTransform(smoothProgress, [0, 1], [0, 40]);
-  const bgColor = useTransform(smoothProgress, [0, 0.5, 1], ["#034D75", "#023E5F", "#012B44"]);
+  // Background shifts from Sky 200 light blue to Sky 400 sea blue
+  const bgColor = useTransform(smoothProgress, [0, 0.5, 1], ["#BAE6FD", "#7DD3FC", "#38BDF8"]);
+  const depth = useTransform(smoothProgress, [0, 1], [0, 60]);
 
   return (
     <motion.div 
       ref={containerRef} 
       style={{ backgroundColor: bgColor }}
-      className="relative w-full text-white selection:bg-accent selection:text-black overflow-x-hidden"
+      className="relative w-full text-slate-900 selection:bg-accent selection:text-white overflow-x-hidden"
     >
-      {/* Cinematic Noise Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] contrast-150 brightness-150" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
+      {/* Cinematic Grain Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.04] contrast-125" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
       
-      {/* Custom Cursor */}
-      <motion.div 
-        className="fixed w-6 h-6 border border-accent rounded-full pointer-events-none z-[101] hidden md:block"
-        style={{ x: mouseX, y: mouseY, left: -12, top: -12 }}
-      />
-
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center p-8 mix-blend-difference">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full border-2 border-accent flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+      {/* Sticky Top Nav (Apple Style) */}
+      <nav className="fixed top-0 left-0 w-full z-[100] backdrop-blur-xl bg-white/10 border-b border-black/5 px-6 md:px-12 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
+            <Waves size={20} />
           </div>
-          <span className="font-display text-2xl font-bold tracking-tight">DEPTHS</span>
+          <span className="font-display text-2xl font-black tracking-tighter uppercase">DEPTHS</span>
         </div>
         
-        <div className="hidden md:flex gap-12 items-center">
-          {['Charters', 'Vessels', 'Destinations', 'Crew', 'Contact'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} className="caption-meta hover:text-accent transition-colors">
+        <div className="hidden md:flex gap-10 items-center">
+          {['Expeditions', 'The Fleet', 'Seychelles', 'Concierge'].map((item) => (
+            <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-sm font-bold tracking-tight hover:text-accent transition-colors">
               {item}
             </a>
           ))}
-          <button className="px-6 py-2 bg-accent text-black rounded-pill font-medium text-sm hover:scale-105 transition-transform">
-            BOOK NOW
+          <button className="px-6 py-2 bg-slate-900 text-white rounded-full text-xs font-bold hover:bg-slate-800 transition-colors uppercase tracking-widest">
+            Book Vessel
           </button>
         </div>
 
-        <button className="md:hidden text-white z-[60]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X /> : <Menu />}
+        <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-
-        {/* Mobile Menu Overlay */}
-        <motion.div 
-          initial={{ x: "100%" }}
-          animate={{ x: isMenuOpen ? 0 : "100%" }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed inset-0 bg-background z-50 flex flex-col items-center justify-center gap-8 md:hidden"
-        >
-          {['Charters', 'Vessels', 'Destinations', 'Crew', 'Contact'].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`} 
-              onClick={() => setIsMenuOpen(false)}
-              className="display-l text-2xl hover:text-accent transition-colors"
-            >
-              {item}
-            </a>
-          ))}
-          <button className="px-8 py-3 bg-accent text-black rounded-pill font-bold mt-8">
-            BOOK NOW
-          </button>
-        </motion.div>
       </nav>
 
-      {/* Depth Gauge */}
-      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-4">
-        <div className="caption-meta rotate-90 mb-12 origin-center whitespace-nowrap text-white/40">DESCENT DEPTH</div>
-        <div className="h-64 w-[1px] bg-white/10 relative">
-          <motion.div 
-            style={{ top: useTransform(smoothProgress, [0, 1], ["0%", "100%"]) }}
-            className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-accent cyan-glow"
-          />
-        </div>
-        <div className="flex flex-col items-center">
-          <motion.span className="text-3xl font-display font-bold text-accent">
-            {useTransform(depth, (v) => v.toFixed(0))}
-          </motion.span>
-          <span className="caption-meta text-[10px] text-white/40">METERS</span>
+      {/* Mobile Menu */}
+      <motion.div 
+        initial={{ y: "-100%" }}
+        animate={{ y: isMenuOpen ? 0 : "-100%" }}
+        className="fixed inset-0 z-[90] bg-white flex flex-col items-center justify-center gap-8 md:hidden p-12"
+      >
+        {['Expeditions', 'The Fleet', 'Seychelles', 'Concierge'].map((item) => (
+          <a key={item} href={`#${item.toLowerCase()}`} className="display-l text-4xl" onClick={() => setIsMenuOpen(false)}>
+            {item}
+          </a>
+        ))}
+        <button className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold mt-12">BOOK NOW</button>
+      </motion.div>
+
+      {/* Depth Indicator (Floating) */}
+      <div className="fixed left-8 top-1/2 -translate-y-1/2 z-[80] hidden lg:block">
+        <div className="flex flex-col items-center gap-6">
+          <div className="w-px h-40 bg-slate-900/10 relative overflow-hidden">
+            <motion.div 
+               style={{ height: useTransform(smoothProgress, [0, 1], ["0%", "100%"]) }}
+               className="w-full bg-slate-900"
+            />
+          </div>
+          <motion.div className="text-xs font-black rotate-0 flex flex-col items-center">
+             <span className="text-slate-900 opacity-30 mb-2 uppercase tracking-[0.2em] [writing-mode:vertical-rl]">Ocean Depth</span>
+             <motion.span className="text-2xl mt-4 font-black">
+                {useTransform(depth, (v) => Math.round(v))}m
+             </motion.span>
+          </motion.div>
         </div>
       </div>
 
-      {/* Scroll Expansion Hero Wrapper */}
+      {/* Hero Expansion Wrapper */}
       <ScrollExpandMedia
         mediaType="video"
         mediaSrc="/hero.mp4"
         bgImageSrc="/hero.png"
-        title="DEPTHS ABYSS"
-        date="SEYCHELLES"
-        scrollToExpand="SCROLL TO DESCEND"
-        textBlend
+        title="BEYOND THE HORIZON"
+        date="PRIVATE ADVENTURES"
+        scrollToExpand="SCROLL DOWN TO DIVE"
+        textBlend={false}
       >
-        <div className="pt-20">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-center mb-40 text-white"
-          >
-            <span className="caption-meta text-accent mb-6 block tracking-widest">PREMIUM PRIVATE CHARTERS</span>
-            <h2 className="display-xl mb-8 font-bold">Unrivaled Access</h2>
-            <p className="max-w-xl mx-auto text-sky-100 text-lg mb-10">
-              Discover the hidden treasures of the Indian Ocean with our bespoke fleet and expert crew.
-            </p>
-          </motion.div>
-
-          {/* Grid Features / Charter Types */}
-          <section id="charters" className="px-6 md:px-20 pb-32">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { title: "Day Charters", icon: <Ship />, desc: "Private island excursions, snorkeling & BBQ." },
-                { title: "Dive Courses", icon: <Anchor />, desc: "PADI certified courses for all skill levels." },
-                { title: "Sunset Cruises", icon: <Waves />, desc: "Romantic champagne sessions at sea." }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="glass p-8 rounded-card hover:bg-white/5 transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
-                    {item.icon}
-                  </div>
-                  <h3 className="h3-custom mb-4 text-white">{item.title}</h3>
-                  <p className="text-slate-400 mb-8">{item.desc}</p>
-                  <a href="#" className="flex items-center gap-2 text-sm font-bold text-accent">
-                    VIEW DETAILS <ChevronDown className="-rotate-90" size={16} />
-                  </a>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-
-          {/* Floating Image Section - "The Vessel" */}
-          <section id="vessels" className="py-32 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-              <motion.div 
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                className="relative"
-              >
-                <div className="absolute -inset-10 bg-accent/10 blur-[100px] rounded-full" />
-                <img src="/hero.png" alt="Vessel" className="rounded-card shadow-2xl relative z-10" />
-                <div className="absolute top-10 -right-10 glass p-6 rounded-xl z-20 hidden md:block">
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="p-2 bg-accent/20 rounded-lg text-accent"><Ship size={20}/></div>
-                    <div>
-                      <div className="text-xs opacity-50 uppercase tracking-widest">Fleet Active</div>
-                      <div className="font-bold">Princess V55</div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              <div>
-                <span className="caption-meta text-accent mb-4 block">THE FLEET</span>
-                <h2 className="display-l mb-8 text-white">Uncompromising Luxury</h2>
-                <p className="text-lg text-sky-100 mb-10 leading-relaxed">
-                  Our fleet represents the pinnacle of nautical engineering. From high-speed chase boats to stabilized luxury yachts, every vessel is curated for the Seychellois waters.
-                </p>
-                <div className="space-y-6">
-                  {[
-                    "Stabilized Gyro Navigation",
-                    "PADI Certified On-board Equipment",
-                    "Gourmet Catering Options",
-                    "Professional Multi-lingual Crew"
-                  ].map((text, i) => (
-                    <div key={i} className="flex items-center gap-4">
-                      <div className="w-5 h-5 rounded-full border border-accent flex items-center justify-center">
-                        <div className="w-1 h-1 bg-accent rounded-full" />
-                      </div>
-                      <span className="text-sky-50 font-medium">{text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Itineraries / Map Section */}
-          <section id="destinations" className="py-32 bg-[#023E5F]/80 backdrop-blur-sm">
-            <div className="max-w-5xl mx-auto text-center px-6 mb-20 text-white">
-              <span className="caption-meta text-accent mb-4 block">DESTINATIONS</span>
-              <h2 className="display-l mb-6 font-bold">Explore the Archipelago</h2>
-              <p className="text-sky-100">Curated routes between the inner and outer islands of Seychelles.</p>
-            </div>
-            
-            <div className="flex overflow-x-auto pb-20 px-6 gap-8 no-scrollbar scroll-smooth">
-              {[
-                "Mahé to Praslin",
-                "La Digue Escape",
-                "Curieuse Sanctuary",
-                "Outer Islands Exploration"
-              ].map((route, i) => (
-                <motion.div 
-                   key={i}
-                   whileHover={{ y: -10 }}
-                   className="min-w-[300px] md:min-w-[400px] h-[500px] relative rounded-card overflow-hidden group cursor-pointer"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10" />
-                  <img src="/hero.png" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 !opacity-100" />
-                  <div className="absolute bottom-8 left-8 z-20">
-                    <h4 className="h3-custom mb-2 text-white">{route}</h4>
-                    <div className="flex items-center gap-2 text-slate-300 text-sm mb-4">
-                      <MapPin size={14} /> 4 Islands • 3 Days
-                    </div>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-accent font-bold">
-                      VIEW EXPEDITION <ChevronDown className="-rotate-90" size={16} />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-
-          {/* Footer / Contact CTA */}
-          <footer id="contact" className="pt-60 pb-20 px-6 overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-20" />
-            
-            <div className="max-w-7xl mx-auto flex flex-col items-center text-center text-white">
-              <h2 className="display-xl mb-12 font-bold">Ready to <span className="text-accent underline decoration-accent/30 underline-offset-8">Dive?</span></h2>
-              <p className="text-sky-100 max-w-xl mb-12">
-                Contact our concierge team to build your tailor-made Seychelles experience.
+        {/* Full Viewport Immersive Content Blocks */}
+        <div className="relative">
+          
+          {/* Section 1: Introduction (Apple Typography Style) */}
+          <section id="expeditions" className="min-h-screen flex flex-col items-center justify-center p-6 md:p-24 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="max-w-4xl"
+            >
+              <h2 className="display-xl mb-12 font-black !tracking-tight">Your gateway to the Seychelles archipelago.</h2>
+              <p className="text-2xl md:text-3xl text-slate-800/80 leading-relaxed font-medium mb-16">
+                Not just a charter. A curated nautical experience spanning the most remote corners of the Indian Ocean.
               </p>
-              <div className="flex flex-wrap justify-center gap-6 mb-32">
-                {[
-                  { icon: <MessageSquare />, label: "WhatsApp Concierge", sub: "+248 123 4567" },
-                  { icon: <Calendar />, label: "Online Booking", sub: "Fast & Secure" },
-                ].map((item, i) => (
-                  <div key={i} className="glass p-8 rounded-2xl flex flex-col items-center min-w-[280px] hover:border-accent transition-colors cursor-pointer group !bg-white/5">
-                    <div className="mb-4 text-accent group-hover:scale-110 transition-transform">{item.icon}</div>
-                    <div className="font-bold mb-1">{item.label}</div>
-                    <div className="text-sky-200 text-sm">{item.sub}</div>
-                  </div>
-                ))}
+              <div className="flex flex-wrap justify-center gap-6">
+                <button className="px-10 py-5 bg-slate-900 text-white rounded-full font-bold text-lg hover:scale-105 transition-transform flex items-center gap-3 shadow-xl shadow-black/10">
+                  EXPLORE EXPEDITIONS <ArrowRight />
+                </button>
+                <button className="px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-full font-bold text-lg hover:bg-slate-50 transition-colors">
+                  VIEW VESSEL SPECS
+                </button>
               </div>
+            </motion.div>
+          </section>
 
-              <div className="w-full flex flex-col md:flex-row justify-between items-center pt-20 border-t border-white/10 gap-10">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full border border-accent flex items-center justify-center">
-                    <div className="w-1 h-1 bg-accent rounded-full" />
-                  </div>
-                  <span className="font-display font-bold">DEPTHS</span>
+          {/* Section 2: Large Viewport Showcase 1 (The Fleet) */}
+          <section id="the-fleet" className="relative w-full h-screen overflow-hidden flex items-center justify-center">
+             <motion.div 
+               whileInView={{ scale: 1.1 }}
+               transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
+               className="absolute inset-0 z-0"
+             >
+               <img src="/hero.png" className="w-full h-full object-cover grayscale-[20%] opacity-80" />
+             </motion.div>
+             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-blue-200/40 z-[1]" />
+             
+             <div className="relative z-10 text-center px-6">
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  className="display-xl block font-black text-white mix-blend-overlay opacity-40 uppercase"
+                >
+                  THE FLEET
+                </motion.span>
+                <div className="max-w-2xl mx-auto mt-[-40px]">
+                   <h2 className="display-l text-slate-900 font-black mb-8">Uncompromising Engineering.</h2>
+                   <p className="text-xl md:text-2xl text-slate-800 font-medium">
+                      Built for the Seychellois waters, our vessels combine high-speed capability with stabilized luxury.
+                   </p>
                 </div>
-                <div className="flex gap-8 caption-meta text-[10px] text-sky-300">
-                  <a href="#" className="hover:text-accent transition-colors">Privacy Policy</a>
-                  <a href="#" className="hover:text-accent transition-colors">Terms of Service</a>
-                  <span>© 2026 Depths Charters Ltd.</span>
+             </div>
+          </section>
+
+          {/* Section 3: Large Viewport Showcase 2 (Seychelles) */}
+          <section id="seychelles" className="relative w-full h-screen grid grid-cols-1 md:grid-cols-2">
+             <div className="h-full bg-slate-900 p-12 md:p-24 flex flex-col justify-center text-white">
+                <h3 className="caption-meta text-accent mb-6">REMOTE DESTINATIONS</h3>
+                <h2 className="display-l font-black mb-10 leading-[0.9]">Beyond Pearl and Curieuse.</h2>
+                <p className="text-xl opacity-80 leading-relaxed mb-12">
+                   Our expeditions reach the outer island groups—Amirantes and Alphonse—where few dare to venture. This is the last frontier of ocean exploration.
+                </p>
+                <a href="#" className="w-fit flex items-center gap-4 text-accent font-bold text-lg border-b-2 border-accent/20 pb-2 hover:border-accent transition-all">
+                  SEE THE MAP <MapPin size={22} />
+                </a>
+             </div>
+             <div className="h-full relative overflow-hidden">
+                <img src="/hero.png" alt="Map View" className="absolute inset-0 w-full h-full object-cover scale-125 hover:scale-100 transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-accent/20 mix-blend-color" />
+             </div>
+          </section>
+
+          {/* Section 4: Vertical Narrative (Concierge) */}
+          <section id="concierge" className="py-40 px-6 md:px-24">
+             <div className="max-w-5xl mx-auto">
+                <div className="flex flex-col md:flex-row items-end justify-between mb-32 gap-10">
+                   <h2 className="display-l font-black !tracking-tighter max-w-xl">A service curated around you.</h2>
+                   <p className="text-xl text-slate-600 max-w-xs font-medium">
+                      From private chefs to diving experts, our crew is ready for any ambition.
+                   </p>
                 </div>
-              </div>
-            </div>
+                
+                <div className="space-y-1 bg-slate-900 rounded-[40px] overflow-hidden">
+                   {[
+                      { title: "Personal Concierge", desc: "Available 24/7 via WhatsApp to handle your island itinerary." },
+                      { title: "Master Divers", desc: "PADI certified experts for underwater discovery beyond the reef." },
+                      { title: "Culinary Arts", desc: "Fresh Seychellois flavors prepared by our on-board private chef." }
+                   ].map((item, i) => (
+                      <div key={i} className="group p-12 md:p-20 bg-slate-50 hover:bg-white transition-colors flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-slate-200">
+                         <div className="max-w-md">
+                            <span className="text-xs font-black text-accent mb-4 block">0{i+1} — EXPERIENCE</span>
+                            <h3 className="h1-custom font-black mb-4">{item.title}</h3>
+                            <p className="text-slate-600 font-medium">{item.desc}</p>
+                         </div>
+                         <div className="w-16 h-16 rounded-full border border-slate-900 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-all cursor-pointer">
+                            <ArrowRight />
+                         </div>
+                      </div>
+                   ))}
+                </div>
+             </div>
+          </section>
+
+          {/* Footer (Simplified Apple Style) */}
+          <footer className="pt-40 pb-20 px-6 md:px-24 bg-white text-slate-900">
+             <div className="max-w-7xl mx-auto text-center border-b border-slate-100 pb-40 mb-20">
+                <h2 className="display-xl font-black mb-12 italic tracking-tighter">Own the Abyss.</h2>
+                <button className="px-12 py-6 bg-slate-900 text-white rounded-full font-black text-xl hover:bg-accent transition-all uppercase tracking-widest">
+                   START YOUR JOURNEY
+                </button>
+             </div>
+             
+             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-xs font-bold uppercase tracking-widest text-slate-400">
+                <div className="flex items-center gap-6">
+                   <a href="#" className="hover:text-slate-900 transition-colors">Instagram</a>
+                   <a href="#" className="hover:text-slate-900 transition-colors">Vimeo</a>
+                   <a href="#" className="hover:text-slate-900 transition-colors">LinkedIn</a>
+                </div>
+                <div className="flex items-center gap-8">
+                   <span>© 2026 DEPTHS CHARTERS</span>
+                   <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
+                   <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
+                </div>
+             </div>
           </footer>
         </div>
       </ScrollExpandMedia>
