@@ -240,10 +240,10 @@ const App = () => {
                  {[
                    { name: 'Hawksbill Turtle', img: '/hero.png' },
                    { name: 'Manta Ray', img: '/hero.png' },
-                   { name: 'Reef Shark', img: '/hero.png' },
+                   { name: 'Reef Shark', img: '/reef shark.jpg' },
                    { name: 'Napoleon Wrasse', img: '/hero.png' },
-                   { name: 'Eagle Ray', img: '/hero.png' },
-                   { name: 'Whale Shark', img: '/hero.png' }
+                   { name: 'Eagle Ray', img: '/Spotted_Eagle_Ray.jpg' },
+                   { name: 'Whale Shark', img: '/whale shark.webp' }
                  ].map((item) => (
                    <div key={item.name} className="flex flex-col items-center group cursor-pointer">
                       <div className="w-full aspect-square rounded-full border-2 border-current p-2 group-hover:border-lagoon transition-colors duration-500 mb-4 overflow-hidden">
